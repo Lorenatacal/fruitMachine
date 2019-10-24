@@ -58,7 +58,9 @@
       calculateScore() {
         if (this.reelsValueAfterSpin[0] !== this.reelsValueAfterSpin[1] && this.reelsValueAfterSpin[1] !== this.reelsValueAfterSpin[2]) {
           this.score = 0
-        } 
+        } else if (this.findDuplicates(this.reelsValueAfterSpin)) {
+          this.score = 10
+        }
       }
     }
 
@@ -117,11 +119,12 @@
             expect(newGame.score).to.deep.equal(0)
           })
 
-          // it('should return 0 if all the items are different', () => {
-          //   newGame.spin(0, 0, 3)
+          it("should return 10 for 2 'Wild' items selected", () => {
+            newGame.spin(0, 0, 3)
+            newGame.calculateScore()
 
-          //   expect(newGame.score).to.deep.equal(10)
-          // })
+            expect(newGame.score).to.deep.equal(10)
+          })
         })
       })
     })
