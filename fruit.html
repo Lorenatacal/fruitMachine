@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <title>Mocha Tests</title>
@@ -7,49 +8,63 @@
   <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
 </head>
 ​
+
 <body>
   <!-- Mocha setup -->
   <div id="mocha"></div>
   <script src="https://unpkg.com/chai/chai.js"></script>
   <script src="https://unpkg.com/mocha/mocha.js"></script>
-​
+  ​
   <script class="mocha-init">
     mocha.setup('bdd');
     mocha.checkLeaks();
   </script>
-​
+  ​
   <!-- Main code -->
   <script>
     // write your code here
-      class Fruit {
-        constructor(reels) {
-          this.reels = {
-              reel1: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
-              reel2: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
-              reel3: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"]
-          }
-          this.reelsValueAfterSpin = []
-          this.score = 0
+    class Fruit {
+      constructor(reels) {
+        this.reels = {
+          reel1: ["Wild", "Star", "Bell", "Shell", "Seven", "Cherry", "Bar", "King", "Queen", "Jack"],
+          reel2: ["Wild", "Star", "Bell", "Shell", "Seven", "Cherry", "Bar", "King", "Queen", "Jack"],
+          reel3: ["Wild", "Star", "Bell", "Shell", "Seven", "Cherry", "Bar", "King", "Queen", "Jack"]
         }
-
-        spin() {
-          this.reelsValueAfterSpin = [this.reels.reel1[1], this.reels.reel1[0], this.reels.reel1[3]]
-          return this.reelsValueAfterSpin
-        }
-
-        score() {
-          if((this.reelsValueAfterSpin[0] === this.reelsValueAfterSpin[1]) && this.reelsValueAfterSpin[1] === this.reelsValueAfterSpin[2]) {
-            return 
-          }
-          if((this.reelsValueAfterSpin[0] === this.reelsValueAfterSpin[1]) && this.reelsValueAfterSpin[1] === this.reelsValueAfterSpin[2]) {
-            return 0
-          }
+        this.reelsValueAfterSpin = []
+        this.score = null
+        this.scoreForTwoOfTheSame = {
+          Wild: 10,
+          Star: 9,
+          Bell: 8,
+          Shell: 7,
+          Seven: 6,
+          Cherry: 5,
+          Bar: 4,
+          King: 3,
+          Queen: 2,
+          Jack: 1
         }
       }
 
+      spin(index1, index2, index3) {
+        this.reelsValueAfterSpin = [this.reels.reel1[index1], this.reels.reel1[index2], this.reels.reel1[index3]]
+        return this.reelsValueAfterSpin
+      }
+
+      findDuplicates(arr) {
+        return arr.filter((item, index) => arr.indexOf(item) != index)
+      }
+
+      calculateScore() {
+        if (this.reelsValueAfterSpin[0] !== this.reelsValueAfterSpin[1] && this.reelsValueAfterSpin[1] !== this.reelsValueAfterSpin[2]) {
+          this.score = 0
+        } 
+      }
+    }
+
 
   </script>
-​
+  ​
   <!-- tests -->
   <script>
     const expect = chai.expect
@@ -59,35 +74,54 @@
     describe('fruit', () => {
       describe('MVP', () => {
         describe("Initialisation", () => {
-            const newGame = new Fruit()
-            let reels = {
-              reel1: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
-              reel2: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
-              reel3: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"]
-              }
+          const newGame = new Fruit()
+          let reels = {
+            reel1: ["Wild", "Star", "Bell", "Shell", "Seven", "Cherry", "Bar", "King", "Queen", "Jack"],
+            reel2: ["Wild", "Star", "Bell", "Shell", "Seven", "Cherry", "Bar", "King", "Queen", "Jack"],
+            reel3: ["Wild", "Star", "Bell", "Shell", "Seven", "Cherry", "Bar", "King", "Queen", "Jack"]
+          }
 
-            it('initialises with 3 wheels', () => {
+          it('initialises with 3 wheels', () => {
             expect(newGame.reels).to.deep.equal(reels)
           })
         })
+
         describe("spin() should return a random item for a each reel", () => {
-            const newGame =  new Fruit()
-            let reels = {
-              reel1: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
-              reel2: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
-              reel3: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"]
-              }
+          const newGame = new Fruit()
+          let reels = {
+            reel1: ["Wild", "Star", "Bell", "Shell", "Seven", "Cherry", "Bar", "King", "Queen", "Jack"],
+            reel2: ["Wild", "Star", "Bell", "Shell", "Seven", "Cherry", "Bar", "King", "Queen", "Jack"],
+            reel3: ["Wild", "Star", "Bell", "Shell", "Seven", "Cherry", "Bar", "King", "Queen", "Jack"]
+          }
 
-            it('should return an array of items when is called', () => {
-              newGame.spin(reels)
-              expect(newGame.spin(reels)).to.deep.equal(['Star', 'Wild', 'Shell'])
-            })
+          it('should return an array of items when is called', () => {
+            newGame.spin(1, 0, 3)
 
-            it('should return 0 if all the items are different', () => {
-              newGame.spin(reels)
-             
-              expect(newGame.score).to.deep.equal(0)
-            })
+            expect(newGame.reelsValueAfterSpin).to.deep.equal(['Star', 'Wild', 'Shell'])
+          })
+
+          it('should return an array of items when is called', () => {
+            newGame.spin(0, 0, 0)
+
+            expect(newGame.reelsValueAfterSpin).to.deep.equal(['Wild', 'Wild', 'Wild'])
+          })
+        })
+
+        describe("calculateScore() to return the score when is called", () => {
+          let newGame = new Fruit()
+
+          it('should return 0 if all the items are different', () => {
+            newGame.spin(1, 0, 3)
+            newGame.calculateScore()
+
+            expect(newGame.score).to.deep.equal(0)
+          })
+
+          // it('should return 0 if all the items are different', () => {
+          //   newGame.spin(0, 0, 3)
+
+          //   expect(newGame.score).to.deep.equal(10)
+          // })
         })
       })
     })
@@ -97,4 +131,5 @@
   </script>
 </body>
 ​
+
 </html>
