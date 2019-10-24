@@ -21,6 +21,12 @@
   <!-- Main code -->
   <script>
     // write your code here
+      class fruit {
+        constructor(wheels) {
+          this.wheels = {}
+        }
+      }
+
   </script>
 ​
   <!-- tests -->
@@ -29,8 +35,13 @@
   </script>
   <script>
     // write your tests here
-
-
+    describe('fruit', () => {
+      describe('MVP', () => {
+        describe("Initialisation", () => {
+          let newGame = new fruit()
+        })
+      })
+    })
   </script>
   <script class="mocha-exec">
     mocha.run();
