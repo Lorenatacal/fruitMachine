@@ -22,8 +22,12 @@
   <script>
     // write your code here
       class fruit {
-        constructor(wheels) {
-          this.wheels = {}
+        constructor() {
+          this.reels = {
+              reel1: "Wild",
+              reel2: "Cherry",
+              reel3: "Queen"
+          }
         }
       }
 
@@ -38,7 +42,16 @@
     describe('fruit', () => {
       describe('MVP', () => {
         describe("Initialisation", () => {
-          let newGame = new fruit()
+            const newGame = new fruit()
+            let reels = {
+              reel1: "Wild",
+              reel2: "Cherry",
+              reel3: "Queen"
+              }
+
+            it('initialises with 3 wheels', () => {
+            expect(newGame.reels).to.deep.equal(reels)
+          })
         })
       })
     })
