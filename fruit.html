@@ -28,14 +28,25 @@
               reel2: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
               reel3: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"]
           }
+          this.reelsValueAfterSpin = []
+          this.score = 0
         }
 
-        spin(reels) {
-          let a = []
-          a.push(this.reels.reel1[1], this.reels.reel1[0], this.reels.reel1[3])
-          return a
+        spin() {
+          this.reelsValueAfterSpin = [this.reels.reel1[1], this.reels.reel1[0], this.reels.reel1[3]]
+          return this.reelsValueAfterSpin
+        }
+
+        score() {
+          if((this.reelsValueAfterSpin[0] === this.reelsValueAfterSpin[1]) && this.reelsValueAfterSpin[1] === this.reelsValueAfterSpin[2]) {
+            return 
+          }
+          if((this.reelsValueAfterSpin[0] === this.reelsValueAfterSpin[1]) && this.reelsValueAfterSpin[1] === this.reelsValueAfterSpin[2]) {
+            return 0
+          }
         }
       }
+
 
   </script>
 ​
@@ -66,9 +77,16 @@
               reel2: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
               reel3: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"]
               }
+
             it('should return an array of items when is called', () => {
               newGame.spin(reels)
               expect(newGame.spin(reels)).to.deep.equal(['Star', 'Wild', 'Shell'])
+            })
+
+            it('should return 0 if all the items are different', () => {
+              newGame.spin(reels)
+             
+              expect(newGame.score).to.deep.equal(0)
             })
         })
       })
