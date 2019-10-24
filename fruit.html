@@ -21,13 +21,19 @@
   <!-- Main code -->
   <script>
     // write your code here
-      class fruit {
-        constructor() {
+      class Fruit {
+        constructor(reels) {
           this.reels = {
-              reel1: "Wild",
-              reel2: "Cherry",
-              reel3: "Queen"
+              reel1: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
+              reel2: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
+              reel3: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"]
           }
+        }
+
+        spin(reels) {
+          let a = []
+          a.push(this.reels.reel1[1], this.reels.reel1[0], this.reels.reel1[3])
+          return a
         }
       }
 
@@ -42,16 +48,28 @@
     describe('fruit', () => {
       describe('MVP', () => {
         describe("Initialisation", () => {
-            const newGame = new fruit()
+            const newGame = new Fruit()
             let reels = {
-              reel1: "Wild",
-              reel2: "Cherry",
-              reel3: "Queen"
+              reel1: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
+              reel2: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
+              reel3: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"]
               }
 
             it('initialises with 3 wheels', () => {
             expect(newGame.reels).to.deep.equal(reels)
           })
+        })
+        describe("spin() should return a random item for a each reel", () => {
+            const newGame =  new Fruit()
+            let reels = {
+              reel1: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
+              reel2: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"],
+              reel3: ["Wild","Star","Bell","Shell","Seven","Cherry","Bar","King","Queen","Jack"]
+              }
+            it('should return an array of items when is called', () => {
+              newGame.spin(reels)
+              expect(newGame.spin(reels)).to.deep.equal(['Star', 'Wild', 'Shell'])
+            })
         })
       })
     })
