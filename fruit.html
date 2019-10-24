@@ -59,7 +59,7 @@
         if (this.reelsValueAfterSpin[0] !== this.reelsValueAfterSpin[1] && this.reelsValueAfterSpin[1] !== this.reelsValueAfterSpin[2]) {
           this.score = 0
         } else if (this.findDuplicates(this.reelsValueAfterSpin)) {
-          this.score = 10
+          this.score = this.scoreForTwoOfTheSame[this.findDuplicates(this.reelsValueAfterSpin)]
         }
       }
     }
@@ -124,6 +124,12 @@
             newGame.calculateScore()
 
             expect(newGame.score).to.deep.equal(10)
+          })
+          it('should return scoreForTwoOfTheSame when 2 of the same items are selected', () => {
+            newGame.spin(1, 1, 3)
+            newGame.calculateScore()
+            
+            expect(newGame.score).to.deep.equal(9)
           })
         })
       })
