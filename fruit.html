@@ -44,6 +44,7 @@
           Queen: 2,
           Jack: 1
         }
+        // this.play = null
       }
 
       spin(index1, index2, index3) {
@@ -51,13 +52,13 @@
         return this.reelsValueAfterSpin
       }
 
-      randomSpin(){
+      randomSpin() {
         let randomNumber1 = Math.floor(Math.random() * 10)
         let randomNumber2 = Math.floor(Math.random() * 10)
         let randomNumber3 = Math.floor(Math.random() * 10)
-        console.log(randomNumber1, "r1", randomNumber2, '2', randomNumber3, '3')
-        this.reelsValueAfterSpin = [this.reels.reel1[randomNumber1], this.reels.reel1[randomNumber2], this.reels.reel1[randomNumber3]]
-        console.log(this.reelsValueAfterSpin)
+        
+        this.reelsValueAfterSpin = [this.reels.reel1[randomNumber1], this.reels.reel2[randomNumber2], this.reels.reel3[randomNumber3]]
+        
         return this.reelsValueAfterSpin
       }
 
@@ -69,13 +70,21 @@
         if (this.reelsValueAfterSpin[0] !== this.reelsValueAfterSpin[1] && this.reelsValueAfterSpin[1] !== this.reelsValueAfterSpin[2]) {
           this.score = 0
         } else if (this.reelsValueAfterSpin.every((val, i, arr) => val === arr[0])) {
-          let arr = this.reelsValueAfterSpin
-          return this.score = this.scoreForTwoOfTheSame[arr[0]] * 10
+          const arr = this.reelsValueAfterSpin
+          this.score = this.scoreForTwoOfTheSame[arr[0]] * 10
+          return this.score
         } else if (this.reelsValueAfterSpin.includes('Wild') && this.findDuplicates(this.reelsValueAfterSpin)) {
-          return this.score = 18
+          return this.score = this.scoreForTwoOfTheSame[this.findDuplicates(this.reelsValueAfterSpin)] + this.scoreForTwoOfTheSame[this.findDuplicates(this.reelsValueAfterSpin)]
         } else if (this.findDuplicates(this.reelsValueAfterSpin)) {
           this.score = this.scoreForTwoOfTheSame[this.findDuplicates(this.reelsValueAfterSpin)]
         } 
+      }
+
+      play() {
+        this.randomSpin()
+        this.calculateScore()
+        
+        return `You have selected [${this.reelsValueAfterSpin}] your score is: ${this.score}!`
       }
     }
   </script>
@@ -154,6 +163,16 @@
             expect(newGame.score).to.deep.equal(18)
           })
         })
+
+        // describe.only("function play() should return the score", () => {
+        //   let newGame = new Fruit()
+        //   newGame.spin(1,1,1)
+        //   newGame.calculateScore()
+
+        //   it("should return the score when is called", () => {
+        //     expect(newGame.play()).to.deep.equal(90)
+        //   })
+        // })
       })
     })
   </script>
