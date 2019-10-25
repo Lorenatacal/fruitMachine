@@ -44,7 +44,6 @@
           Queen: 2,
           Jack: 1
         }
-        this.randomIndex = null
       }
 
       spin(index1, index2, index3) {
@@ -56,7 +55,9 @@
         let randomNumber1 = Math.floor(Math.random() * 10)
         let randomNumber2 = Math.floor(Math.random() * 10)
         let randomNumber3 = Math.floor(Math.random() * 10)
+        console.log(randomNumber1, "r1", randomNumber2, '2', randomNumber3, '3')
         this.reelsValueAfterSpin = [this.reels.reel1[randomNumber1], this.reels.reel1[randomNumber2], this.reels.reel1[randomNumber3]]
+        console.log(this.reelsValueAfterSpin)
         return this.reelsValueAfterSpin
       }
 
