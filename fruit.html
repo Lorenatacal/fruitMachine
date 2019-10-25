@@ -58,13 +58,19 @@
       calculateScore() {
         if (this.reelsValueAfterSpin[0] !== this.reelsValueAfterSpin[1] && this.reelsValueAfterSpin[1] !== this.reelsValueAfterSpin[2]) {
           this.score = 0
+        } else if (this.reelsValueAfterSpin.every( (val, i, arr) => val === arr[0] )) {
+          let arr = this.reelsValueAfterSpin
+          console.log(this.scoreForTwoOfTheSame[arr[0]])
+          return this.score = this.scoreForTwoOfTheSame[arr[0]] * 10
         } else if (this.findDuplicates(this.reelsValueAfterSpin)) {
           this.score = this.scoreForTwoOfTheSame[this.findDuplicates(this.reelsValueAfterSpin)]
-        }
+        } 
       }
     }
 
-
+          // or check this w3 resource for a proper way of finding duplicates; 
+          // and check if all items in the array are equal https://stackoverflow.com/questions/14832603/check-if-all-values-of-array-are-equal
+          // more importantly look at my search terms on Google
   </script>
   ​
   <!-- tests -->
@@ -130,6 +136,12 @@
             newGame.calculateScore()
             
             expect(newGame.score).to.deep.equal(9)
+          })
+          it('should return the correct score when 3 of the same items are selected', () => {
+            newGame.spin(6, 6, 6)
+            newGame.calculateScore()
+            console.log(newGame, 'newGame')
+            expect(newGame.score).to.deep.equal(40)
           })
         })
       })
